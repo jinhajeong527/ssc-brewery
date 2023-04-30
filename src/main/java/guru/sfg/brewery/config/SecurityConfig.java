@@ -1,5 +1,6 @@
 package guru.sfg.brewery.config;
 
+import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -50,7 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        return new StandardPasswordEncoder();
 //        return new BCryptPasswordEncoder();
         // PasswordEncoderFactories 안의 키를 확인하여 비밀 번호 앞에 붙여주면 된다.
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        // Custom Delegate Password Encoder를 만들고 싶으면 아래와 같이 하면 된다.
+        return SfgPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
@@ -61,12 +64,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .password("{bcrypt}$2a$10$9WwPvn17BvR4a1qhbnJA8u/6LEsUXwZSEMsSYY7QmD6hnnnM.uy0a") // Password Encoder 설정한 것이 아니면 {noop}과 같이 인코더 지정 해주어야 한다.
                 .roles("ADMIN")
                 .and()
-                .with User("user")
+                .withUser("user")
                 .password("{sha256}122a76f891b85acb2c5d1bc5e8e76873b31a0c540121658097425e0e2ea2c5e0b6011e01efbc8341")
                 .roles("USER")
                 .and()
                 .withUser("scott")
-                .password("{ldap}{SSHA}iCvvBdFTHVw4uQemNRjAxT88bOc6K03C4ZThJA==")
+                .password("{bcrypt15}$2a$15$VPAVghq7J9aa87GjnwGai.dC8Y4GX9sXIvghSS.47PJq1RcrbCrLi")
                 .roles("CUSTOMER");
     }
     //    @Override
