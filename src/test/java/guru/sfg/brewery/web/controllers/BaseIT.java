@@ -19,25 +19,24 @@ public class BaseIT {
     WebApplicationContext wac;
 
     protected MockMvc mockMvc;
-
-    @MockBean
-    BeerRepository beerRepository;
-
-    @MockBean
-    BeerInventoryRepository beerInventoryRepository;
-
-    @MockBean
-    BreweryService breweryService;
-
-    @MockBean
-    CustomerRepository customerRepository;
-
-    @MockBean
-    BeerService beerService;
+//    @SpringBootTest로 바꾸었기 때문에 코멘트 아웃한다.
+//    @MockBean
+//    BeerRepository beerRepository;
+//
+//    @MockBean
+//    BeerInventoryRepository beerInventoryRepository;
+//
+//    @MockBean
+//    BreweryService breweryService;
+//
+//    @MockBean
+//    CustomerRepository customerRepository;
+//
+//    @MockBean
+//    BeerService beerService;
 
     @BeforeEach
     void setUp() {
-        System.out.println(wac);
         mockMvc = MockMvcBuilders
                 //웹 애플리케이션 컨텍스트에서는
                 .webAppContextSetup(wac)
