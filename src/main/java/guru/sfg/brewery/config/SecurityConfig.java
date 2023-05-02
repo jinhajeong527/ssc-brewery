@@ -32,7 +32,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true) // 메서드에 @Secured (롤명시) 작동하게 하려면 필요한 어노테이션(프로퍼티까지 놓치지 말 것)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) // 메서드에 @Secured (롤명시) 작동하게 하려면 필요한 어노테이션(프로퍼티까지 놓치지 말 것)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager) {
 //        RestHeaderAuthFilter filter = new RestHeaderAuthFilter(new AntPathRequestMatcher("/api/**"));
