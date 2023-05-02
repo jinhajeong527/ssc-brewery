@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -31,6 +32,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true) // 메서드에 @Secured (롤명시) 작동하게 하려면 필요한 어노테이션(프로퍼티까지 놓치지 말 것)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager) {
 //        RestHeaderAuthFilter filter = new RestHeaderAuthFilter(new AntPathRequestMatcher("/api/**"));
@@ -62,12 +64,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     authorize
                             .antMatchers("/h2-console/**").permitAll() // do not use this in production !!
                             .antMatchers("/", "/login", "/webjars/**", "/resources/**").permitAll()
-                            .antMatchers("/beers/find", "/beers*").permitAll()
                             .antMatchers("/brewery/breweries/**").hasAnyRole("ADMIN","CUSTOMER")
-                            .antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
+                            .antMatchers(HttpMethod.GET, "/api/v1/beer/**").hasAnyRole("ADMIN","CUSTOMER","USER")
                             .antMatchers(HttpMethod.GET, "/brewery/api/v1/breweries").hasAnyRole("ADMIN","CUSTOMER")
                             .mvcMatchers(HttpMethod.DELETE, "/api/v1/beer/**").hasRole("ADMIN")
-                            .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").permitAll();
+                            .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").hasAnyRole("ADMIN","CUSTOMER","USER")
+                            .mvcMatchers("/beers/find", "/beers/{beerId}").hasAnyRole("ADMIN","CUSTOMER","USER");
                 })
                 // 어떤 요청에 대해서든 authorization을 하겠다는 것이므로 그전에 다른 authorization 관련 코드를 작성해야 한다.
                 .authorizeRequests()

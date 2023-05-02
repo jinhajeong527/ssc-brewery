@@ -20,6 +20,7 @@ package guru.sfg.brewery.web.controllers;
 import guru.sfg.brewery.domain.Customer;
 import guru.sfg.brewery.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,7 +47,7 @@ public class CustomerController {
         model.addAttribute("customer", Customer.builder().build());
         return "customers/findCustomers";
     }
-
+    @Secured({"ROLE_ADMIN", "ROLE_CUSTOMER"})// ROLE 붙여줘야 한다.
     @GetMapping
     public String processFindFormReturnMany(Customer customer, BindingResult result, Model model){
         // find customers by name

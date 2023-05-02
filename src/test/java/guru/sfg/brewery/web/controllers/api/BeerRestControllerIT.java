@@ -72,7 +72,7 @@ public class BeerRestControllerIT extends BaseIT {
         void deleteBeerHttpBasic() throws Exception {
             mockMvc.perform(delete("/api/v1/beer/" + beerToDelete().getId())
                             .with(httpBasic("spring", "guru")))
-                    .andExpect(status().isForbidden());
+                    .andExpect(status().is2xxSuccessful());
         }
 
         @Test
@@ -92,7 +92,7 @@ public class BeerRestControllerIT extends BaseIT {
         @Test
         void deleteBeerNoAuth() throws Exception {
             mockMvc.perform(delete("/api/v1/beer/" + beerToDelete().getId()))
-                    .andExpect(status().isForbidden());
+                    .andExpect(status().isUnauthorized());
         }
 
     }
@@ -100,7 +100,7 @@ public class BeerRestControllerIT extends BaseIT {
     @Test
     void findBeers() throws Exception {
         mockMvc.perform(get("/api/v1/beer/"))
-                .andExpect(status().isOk());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -108,7 +108,7 @@ public class BeerRestControllerIT extends BaseIT {
         Beer beer = beerRepository.findAll().get(0);
 
         mockMvc.perform(get("/api/v1/beer/"+beer.getId()))
-                .andExpect(status().isOk());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -116,6 +116,6 @@ public class BeerRestControllerIT extends BaseIT {
         Beer beer = beerRepository.findAll().get(0);
 
         mockMvc.perform(get("/api/v1/beerUpc/"+beer.getUpc()))
-                .andExpect(status().isOk());
+                .andExpect(status().isUnauthorized());
     }
 }
